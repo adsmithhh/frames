@@ -1,0 +1,35 @@
+metadata:
+  source_file: C:\Users\mrcn2\Downloads\metrics.pdf
+  file_type: pdf
+  status: processed
+payload: 'metrics:
+
+  enabled:
+
+  - accuracy
+
+  - response_time
+
+  - interference_score
+
+  accuracy:
+
+  correct: 1
+
+  incorrect: 0
+
+  response_time:
+
+  unit: milliseconds
+
+  interference_score:
+
+  enabled: true
+
+  export:
+
+  save_individual: true
+
+  save_summary: true
+
+  1'

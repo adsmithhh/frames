@@ -1,0 +1,681 @@
+author:
+  name: ExecutiveAudit
+description: Visual oddball detection task with 100 trials. Frequent green circles
+  are standards and rare blue circles are oddballs.
+evaluation:
+  accuracy:
+    enabled: true
+  protocol_adherence:
+    enabled: true
+execution:
+  randomize: false
+  stop_after: 100
+experiment:
+  author:
+    name: ExecutiveAudit
+  compatibility:
+    framework: ExecutiveAudit
+    minimum_configuration_schema: experiment_configuration.v2
+  description: Visual oddball detection task with 100 trials. Frequent green circles
+    are standards and rare blue circles are oddballs.
+  id: visual_oddball_100_v1
+  name: Visual Oddball Detection Task
+  paradigm: oddball
+  version: '1.0'
+framework:
+  min_version: 0.1.0
+instructions:
+  closing_prompt: Now classify the current stimulus.
+  display:
+    field_order:
+    - shape
+    - color
+    labels:
+      color: Color
+      shape: Shape
+    show_field_labels: true
+  example:
+    correct_response: ODDBALL
+    stimulus:
+      color: BLUE
+      shape: CIRCLE
+  examples:
+  - expected_response: ODDBALL
+    id: example_1
+    stimulus:
+      color: BLUE
+      shape: CIRCLE
+  response_format: Return ONLY STANDARD or ODDBALL.
+  stimulus_template:
+    color: <trial stimulus>
+    shape: <trial stimulus>
+  system_role: experimental subject
+  task: 'GREEN CIRCLE is the frequent standard stimulus.
+
+    BLUE CIRCLE is the rare oddball stimulus.
+
+    For each trial, answer whether the current stimulus is STANDARD or ODDBALL.
+
+    '
+  task_brief: 'Classify the current stimulus as STANDARD or ODDBALL.
+
+    '
+  task_detail: 'GREEN CIRCLE is the frequent standard stimulus.
+
+    BLUE CIRCLE is the rare oddball stimulus.
+
+    For each trial, classify only the current stimulus.
+
+    '
+metrics:
+  accuracy:
+    enabled: true
+  protocol_adherence:
+    allowed_values:
+    - STANDARD
+    - ODDBALL
+    enabled: true
+    require_single_token: true
+    stimulus_fields: []
+model:
+  max_tokens: 5
+  temperature: 0.0
+parser:
+  pipeline:
+  - extract_answer
+  - normalize_answer
+  - validate_answer_shape
+  stages:
+    extract_answer:
+      mode: last_token
+    normalize_answer:
+      case: upper
+      strip_punctuation: true
+    validate_answer_shape:
+      require_exactly_one_answer: true
+protocol:
+  goal: Classify each current stimulus as STANDARD or ODDBALL exactly as instructed.
+  role: experimental subject
+  rules:
+  - Answer ONLY with STANDARD or ODDBALL.
+  - Treat GREEN CIRCLE as the frequent standard stimulus.
+  - Treat BLUE CIRCLE as the rare oddball stimulus.
+  - Do NOT explain.
+  - Do NOT justify.
+  - Do NOT analyse.
+  - Do NOT ask questions.
+  - Produce exactly one answer.
+  title: Experiment Protocol
+report_contract:
+  summary_fields:
+  - executed_trials
+  - accuracy_rate
+  - protocol_adherence_rate
+  - average_response_time_seconds
+  trial_fields:
+  - stimulus_id
+  - shape
+  - color
+  - extracted_answer
+  - expected_answer
+  - is_correct
+  - is_protocol_adherent
+  - response_time_seconds
+resources:
+  inline:
+    allowed_values:
+    - STANDARD
+    - ODDBALL
+  references: []
+response:
+  allow_additional_text: false
+  allow_analysis: false
+  allow_explanation: false
+  allow_justification: false
+  allow_multiple_answers: false
+  allow_questions: false
+  allowed_values:
+  - STANDARD
+  - ODDBALL
+  expected: single_token
+  expected_response:
+    field: correct_label
+    source: stimulus_field
+  extraction_mode: last_token
+  normalization: upper
+  protocol_adherence:
+    require_single_token: true
+  require_exactly_one_answer: true
+response_contract:
+  allow_additional_text: false
+  allow_analysis: false
+  allow_explanation: false
+  allow_justification: false
+  allow_multiple_answers: false
+  allow_questions: false
+  allowed_values:
+  - STANDARD
+  - ODDBALL
+  expected: single_token
+  expected_response:
+    field: correct_label
+    source: stimulus_field
+  extraction_mode: last_token
+  normalization: upper
+  require_exactly_one_answer: true
+schema: task_payload.v2
+stimuli:
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 1
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 2
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 3
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 4
+- color: BLUE
+  correct_label: ODDBALL
+  frequency_class: rare
+  shape: CIRCLE
+  stimulus_id: 5
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 6
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 7
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 8
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 9
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 10
+- color: BLUE
+  correct_label: ODDBALL
+  frequency_class: rare
+  shape: CIRCLE
+  stimulus_id: 11
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 12
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 13
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 14
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 15
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 16
+- color: BLUE
+  correct_label: ODDBALL
+  frequency_class: rare
+  shape: CIRCLE
+  stimulus_id: 17
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 18
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 19
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 20
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 21
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 22
+- color: BLUE
+  correct_label: ODDBALL
+  frequency_class: rare
+  shape: CIRCLE
+  stimulus_id: 23
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 24
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 25
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 26
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 27
+- color: BLUE
+  correct_label: ODDBALL
+  frequency_class: rare
+  shape: CIRCLE
+  stimulus_id: 28
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 29
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 30
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 31
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 32
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 33
+- color: BLUE
+  correct_label: ODDBALL
+  frequency_class: rare
+  shape: CIRCLE
+  stimulus_id: 34
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 35
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 36
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 37
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 38
+- color: BLUE
+  correct_label: ODDBALL
+  frequency_class: rare
+  shape: CIRCLE
+  stimulus_id: 39
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 40
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 41
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 42
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 43
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 44
+- color: BLUE
+  correct_label: ODDBALL
+  frequency_class: rare
+  shape: CIRCLE
+  stimulus_id: 45
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 46
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 47
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 48
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 49
+- color: BLUE
+  correct_label: ODDBALL
+  frequency_class: rare
+  shape: CIRCLE
+  stimulus_id: 50
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 51
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 52
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 53
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 54
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 55
+- color: BLUE
+  correct_label: ODDBALL
+  frequency_class: rare
+  shape: CIRCLE
+  stimulus_id: 56
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 57
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 58
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 59
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 60
+- color: BLUE
+  correct_label: ODDBALL
+  frequency_class: rare
+  shape: CIRCLE
+  stimulus_id: 61
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 62
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 63
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 64
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 65
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 66
+- color: BLUE
+  correct_label: ODDBALL
+  frequency_class: rare
+  shape: CIRCLE
+  stimulus_id: 67
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 68
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 69
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 70
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 71
+- color: BLUE
+  correct_label: ODDBALL
+  frequency_class: rare
+  shape: CIRCLE
+  stimulus_id: 72
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 73
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 74
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 75
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 76
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 77
+- color: BLUE
+  correct_label: ODDBALL
+  frequency_class: rare
+  shape: CIRCLE
+  stimulus_id: 78
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 79
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 80
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 81
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 82
+- color: BLUE
+  correct_label: ODDBALL
+  frequency_class: rare
+  shape: CIRCLE
+  stimulus_id: 83
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 84
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 85
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 86
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 87
+- color: BLUE
+  correct_label: ODDBALL
+  frequency_class: rare
+  shape: CIRCLE
+  stimulus_id: 88
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 89
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 90
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 91
+- color: BLUE
+  correct_label: ODDBALL
+  frequency_class: rare
+  shape: CIRCLE
+  stimulus_id: 92
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 93
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 94
+- color: BLUE
+  correct_label: ODDBALL
+  frequency_class: rare
+  shape: CIRCLE
+  stimulus_id: 95
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 96
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 97
+- color: BLUE
+  correct_label: ODDBALL
+  frequency_class: rare
+  shape: CIRCLE
+  stimulus_id: 98
+- color: GREEN
+  correct_label: STANDARD
+  frequency_class: frequent
+  shape: CIRCLE
+  stimulus_id: 99
+- color: BLUE
+  correct_label: ODDBALL
+  frequency_class: rare
+  shape: CIRCLE
+  stimulus_id: 100
+stimulus_schema:
+  fields:
+  - display: true
+    label: Shape
+    name: shape
+    required: true
+    type: string
+  - display: true
+    label: Color
+    name: color
+    required: true
+    type: string
+  id_field: stimulus_id
+version: '2.0'

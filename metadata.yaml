@@ -1,0 +1,18 @@
+package:
+  id: standard_stroop_40
+  name: Standard Stroop Task
+  version: 1.0.0
+
+framework:
+  min_version: 0.1.0
+
+author:
+  name: ExecutiveAudit
+
+description: >
+  Standard 40-item Stroop task used for measuring
+  cognitive interference and response accuracy.
+
+created: 2026-06-29
+
+license: Internal

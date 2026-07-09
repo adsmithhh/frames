@@ -1,0 +1,75 @@
+environment:
+  cache_results: true
+  offline: false
+  working_directory: .
+execution:
+  fail_fast: true
+  parallel_runs: 1
+  random_seed: 42
+  repetitions: 20
+  save_raw_output: true
+  shuffle_trials: false
+  stop_after_trials: null
+  timeout_seconds: 60
+experiment_binding:
+  expected_experiment_id: standard_stroop_200_v2
+  expected_experiment_version: '2.0'
+  fail_on_payload_mismatch: true
+  payload_file: task_payload1.yaml
+extensions:
+  configuration: {}
+  enabled: []
+framework:
+  configuration_schema: experiment_configuration.v2
+  configuration_version: '2.0'
+  name: ExecutiveAudit
+  payload_schema: task_payload.v2
+  payload_version: '2.0'
+logging:
+  level: INFO
+  log_model_responses: true
+  log_prompts: false
+  save_log: true
+metadata:
+  notes: []
+  owner: ExecutiveAudit
+  tags:
+  - stroop
+  - executive-control
+  - baseline
+model:
+  adapter: ollama
+  api_key_env: null
+  base_url: null
+  generation:
+    max_tokens: 5
+    stop_sequences: []
+    temperature: 0.0
+    top_p: null
+  model: llama3.2:1b
+  request:
+    rate_limit: auto
+    retry_count: 2
+    retry_delay_seconds: 3
+    timeout_seconds: 60
+report:
+  formats:
+  - json
+  - html
+  - txt
+  include_raw_responses: true
+  include_trial_table: true
+  output_directory: reports/
+  overwrite_existing: false
+run:
+  description: Runtime configuration for one experiment execution profile.
+  id: stroop_standard_v1
+  label: Standard Stroop Benchmark
+  mode: production
+task:
+  payload_file: task_payload1.yaml
+validation:
+  stop_on_error: true
+  strict_mode: true
+  validate_cross_file_contracts: true
+  validate_payload_before_run: true

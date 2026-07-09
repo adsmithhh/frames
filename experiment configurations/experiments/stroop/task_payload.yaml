@@ -1,0 +1,888 @@
+experiment:
+  id: standard_stroop_200_v2
+  name: Standard Stroop Task
+  version: "2.0"
+
+description: |
+  Standard Stroop color-word interference task with a 200-trial dataset.
+  The model must report the ink color while ignoring the written word.
+
+author:
+  name: ExecutiveAudit
+
+framework:
+  min_version: "0.1.0"
+
+protocol:
+  title: Experiment Protocol
+  role: experimental subject
+  goal: Execute the task exactly as instructed.
+  rules:
+    - Answer ONLY from the provided stimulus.
+    - Ignore prior knowledge.
+    - Ignore common sense expectations.
+    - Do NOT explain.
+    - Do NOT justify.
+    - Do NOT analyse.
+    - Do NOT infer missing information.
+    - Do NOT continue the conversation.
+    - Do NOT generate additional tasks.
+    - Do NOT ask questions.
+    - Produce exactly one answer.
+
+instructions:
+  task: |
+    Name the ink color.
+    Ignore the written word.
+    Use the numerical RGB foreground values from the stimulus.
+  stimulus_template:
+    word: "<trial stimulus>"
+    foreground_rgb: "<trial stimulus>"
+  response_format: Return ONLY the color name that matches the foreground RGB values.
+  example:
+    stimulus:
+      word: RED
+      foreground_rgb: "0, 0, 255"
+    correct_response: BLUE
+  closing_prompt: Now answer using the current stimulus.
+
+response:
+  expected: single_token
+  extraction_mode: last_token
+  normalization: upper
+  expected_response:
+    source: stimulus_field
+    field: ink
+  protocol_adherence:
+    require_single_token: true
+    allowed_stimulus_fields:
+      - ink
+      - word
+  allowed_values:
+    - RED
+    - BLUE
+    - GREEN
+    - YELLOW
+  allow_explanation: false
+  allow_justification: false
+  allow_analysis: false
+  allow_questions: false
+  allow_multiple_answers: false
+  allow_additional_text: false
+  require_exactly_one_answer: true
+
+model:
+  temperature: 0.0
+  max_tokens: 10
+
+execution:
+  randomize: false
+  stop_after: 100
+
+evaluation:
+  accuracy:
+    enabled: true
+  protocol_adherence:
+    enabled: true
+
+stimuli:
+  - id: 1
+    word: RED
+    ink: BLUE
+    foreground: "#0000FF"
+  - id: 2
+    word: YELLOW
+    ink: GREEN
+    foreground: "#008000"
+  - id: 3
+    word: GREEN
+    ink: BLUE
+    foreground: "#0000FF"
+  - id: 4
+    word: RED
+    ink: BLUE
+    foreground: "#0000FF"
+  - id: 5
+    word: GREEN
+    ink: RED
+    foreground: "#FF0000"
+  - id: 6
+    word: YELLOW
+    ink: BLUE
+    foreground: "#0000FF"
+  - id: 7
+    word: GREEN
+    ink: BLUE
+    foreground: "#0000FF"
+  - id: 8
+    word: YELLOW
+    ink: BLUE
+    foreground: "#0000FF"
+  - id: 9
+    word: RED
+    ink: GREEN
+    foreground: "#008000"
+  - id: 10
+    word: BLUE
+    ink: YELLOW
+    foreground: "#FFFF00"
+  - id: 11
+    word: GREEN
+    ink: RED
+    foreground: "#FF0000"
+  - id: 12
+    word: BLUE
+    ink: YELLOW
+    foreground: "#FFFF00"
+  - id: 13
+    word: BLUE
+    ink: RED
+    foreground: "#FF0000"
+  - id: 14
+    word: RED
+    ink: BLUE
+    foreground: "#0000FF"
+  - id: 15
+    word: RED
+    ink: BLUE
+    foreground: "#0000FF"
+  - id: 16
+    word: RED
+    ink: BLUE
+    foreground: "#0000FF"
+  - id: 17
+    word: GREEN
+    ink: YELLOW
+    foreground: "#FFFF00"
+  - id: 18
+    word: YELLOW
+    ink: RED
+    foreground: "#FF0000"
+  - id: 19
+    word: BLUE
+    ink: GREEN
+    foreground: "#008000"
+  - id: 20
+    word: RED
+    ink: GREEN
+    foreground: "#008000"
+  - id: 21
+    word: GREEN
+    ink: RED
+    foreground: "#FF0000"
+  - id: 22
+    word: BLUE
+    ink: YELLOW
+    foreground: "#FFFF00"
+  - id: 23
+    word: BLUE
+    ink: YELLOW
+    foreground: "#FFFF00"
+  - id: 24
+    word: GREEN
+    ink: RED
+    foreground: "#FF0000"
+  - id: 25
+    word: YELLOW
+    ink: RED
+    foreground: "#FF0000"
+  - id: 26
+    word: RED
+    ink: YELLOW
+    foreground: "#FFFF00"
+  - id: 27
+    word: RED
+    ink: YELLOW
+    foreground: "#FFFF00"
+  - id: 28
+    word: BLUE
+    ink: YELLOW
+    foreground: "#FFFF00"
+  - id: 29
+    word: BLUE
+    ink: RED
+    foreground: "#FF0000"
+  - id: 30
+    word: RED
+    ink: BLUE
+    foreground: "#0000FF"
+  - id: 31
+    word: BLUE
+    ink: YELLOW
+    foreground: "#FFFF00"
+  - id: 32
+    word: YELLOW
+    ink: BLUE
+    foreground: "#0000FF"
+  - id: 33
+    word: GREEN
+    ink: BLUE
+    foreground: "#0000FF"
+  - id: 34
+    word: YELLOW
+    ink: RED
+    foreground: "#FF0000"
+  - id: 35
+    word: YELLOW
+    ink: RED
+    foreground: "#FF0000"
+  - id: 36
+    word: BLUE
+    ink: YELLOW
+    foreground: "#FFFF00"
+  - id: 37
+    word: GREEN
+    ink: BLUE
+    foreground: "#0000FF"
+  - id: 38
+    word: GREEN
+    ink: BLUE
+    foreground: "#0000FF"
+  - id: 39
+    word: GREEN
+    ink: YELLOW
+    foreground: "#FFFF00"
+  - id: 40
+    word: GREEN
+    ink: RED
+    foreground: "#FF0000"
+  - id: 41
+    word: RED
+    ink: GREEN
+    foreground: "#008000"
+  - id: 42
+    word: YELLOW
+    ink: RED
+    foreground: "#FF0000"
+  - id: 43
+    word: YELLOW
+    ink: RED
+    foreground: "#FF0000"
+  - id: 44
+    word: RED
+    ink: GREEN
+    foreground: "#008000"
+  - id: 45
+    word: RED
+    ink: YELLOW
+    foreground: "#FFFF00"
+  - id: 46
+    word: BLUE
+    ink: RED
+    foreground: "#FF0000"
+  - id: 47
+    word: GREEN
+    ink: BLUE
+    foreground: "#0000FF"
+  - id: 48
+    word: GREEN
+    ink: BLUE
+    foreground: "#0000FF"
+  - id: 49
+    word: BLUE
+    ink: RED
+    foreground: "#FF0000"
+  - id: 50
+    word: BLUE
+    ink: RED
+    foreground: "#FF0000"
+  - id: 51
+    word: RED
+    ink: BLUE
+    foreground: "#0000FF"
+  - id: 52
+    word: BLUE
+    ink: GREEN
+    foreground: "#008000"
+  - id: 53
+    word: RED
+    ink: YELLOW
+    foreground: "#FFFF00"
+  - id: 54
+    word: RED
+    ink: YELLOW
+    foreground: "#FFFF00"
+  - id: 55
+    word: GREEN
+    ink: BLUE
+    foreground: "#0000FF"
+  - id: 56
+    word: YELLOW
+    ink: RED
+    foreground: "#FF0000"
+  - id: 57
+    word: YELLOW
+    ink: GREEN
+    foreground: "#008000"
+  - id: 58
+    word: RED
+    ink: GREEN
+    foreground: "#008000"
+  - id: 59
+    word: RED
+    ink: GREEN
+    foreground: "#008000"
+  - id: 60
+    word: GREEN
+    ink: YELLOW
+    foreground: "#FFFF00"
+  - id: 61
+    word: YELLOW
+    ink: GREEN
+    foreground: "#008000"
+  - id: 62
+    word: GREEN
+    ink: YELLOW
+    foreground: "#FFFF00"
+  - id: 63
+    word: YELLOW
+    ink: BLUE
+    foreground: "#0000FF"
+  - id: 64
+    word: BLUE
+    ink: RED
+    foreground: "#FF0000"
+  - id: 65
+    word: YELLOW
+    ink: GREEN
+    foreground: "#008000"
+  - id: 66
+    word: RED
+    ink: BLUE
+    foreground: "#0000FF"
+  - id: 67
+    word: GREEN
+    ink: YELLOW
+    foreground: "#FFFF00"
+  - id: 68
+    word: BLUE
+    ink: RED
+    foreground: "#FF0000"
+  - id: 69
+    word: BLUE
+    ink: YELLOW
+    foreground: "#FFFF00"
+  - id: 70
+    word: GREEN
+    ink: RED
+    foreground: "#FF0000"
+  - id: 71
+    word: YELLOW
+    ink: GREEN
+    foreground: "#008000"
+  - id: 72
+    word: BLUE
+    ink: RED
+    foreground: "#FF0000"
+  - id: 73
+    word: GREEN
+    ink: BLUE
+    foreground: "#0000FF"
+  - id: 74
+    word: YELLOW
+    ink: GREEN
+    foreground: "#008000"
+  - id: 75
+    word: YELLOW
+    ink: BLUE
+    foreground: "#0000FF"
+  - id: 76
+    word: GREEN
+    ink: YELLOW
+    foreground: "#FFFF00"
+  - id: 77
+    word: BLUE
+    ink: GREEN
+    foreground: "#008000"
+  - id: 78
+    word: RED
+    ink: YELLOW
+    foreground: "#FFFF00"
+  - id: 79
+    word: BLUE
+    ink: RED
+    foreground: "#FF0000"
+  - id: 80
+    word: RED
+    ink: YELLOW
+    foreground: "#FFFF00"
+  - id: 81
+    word: BLUE
+    ink: GREEN
+    foreground: "#008000"
+  - id: 82
+    word: GREEN
+    ink: YELLOW
+    foreground: "#FFFF00"
+  - id: 83
+    word: RED
+    ink: GREEN
+    foreground: "#008000"
+  - id: 84
+    word: RED
+    ink: GREEN
+    foreground: "#008000"
+  - id: 85
+    word: YELLOW
+    ink: GREEN
+    foreground: "#008000"
+  - id: 86
+    word: GREEN
+    ink: BLUE
+    foreground: "#0000FF"
+  - id: 87
+    word: RED
+    ink: YELLOW
+    foreground: "#FFFF00"
+  - id: 88
+    word: BLUE
+    ink: RED
+    foreground: "#FF0000"
+  - id: 89
+    word: RED
+    ink: GREEN
+    foreground: "#008000"
+  - id: 90
+    word: GREEN
+    ink: RED
+    foreground: "#FF0000"
+  - id: 91
+    word: RED
+    ink: GREEN
+    foreground: "#008000"
+  - id: 92
+    word: RED
+    ink: BLUE
+    foreground: "#0000FF"
+  - id: 93
+    word: YELLOW
+    ink: BLUE
+    foreground: "#0000FF"
+  - id: 94
+    word: GREEN
+    ink: YELLOW
+    foreground: "#FFFF00"
+  - id: 95
+    word: YELLOW
+    ink: RED
+    foreground: "#FF0000"
+  - id: 96
+    word: YELLOW
+    ink: BLUE
+    foreground: "#0000FF"
+  - id: 97
+    word: RED
+    ink: BLUE
+    foreground: "#0000FF"
+  - id: 98
+    word: YELLOW
+    ink: GREEN
+    foreground: "#008000"
+  - id: 99
+    word: GREEN
+    ink: BLUE
+    foreground: "#0000FF"
+  - id: 100
+    word: GREEN
+    ink: RED
+    foreground: "#FF0000"
+  - id: 101
+    word: YELLOW
+    ink: BLUE
+    foreground: "#0000FF"
+  - id: 102
+    word: GREEN
+    ink: BLUE
+    foreground: "#0000FF"
+  - id: 103
+    word: RED
+    ink: BLUE
+    foreground: "#0000FF"
+  - id: 104
+    word: BLUE
+    ink: RED
+    foreground: "#FF0000"
+  - id: 105
+    word: RED
+    ink: GREEN
+    foreground: "#008000"
+  - id: 106
+    word: GREEN
+    ink: RED
+    foreground: "#FF0000"
+  - id: 107
+    word: RED
+    ink: BLUE
+    foreground: "#0000FF"
+  - id: 108
+    word: GREEN
+    ink: YELLOW
+    foreground: "#FFFF00"
+  - id: 109
+    word: GREEN
+    ink: RED
+    foreground: "#FF0000"
+  - id: 110
+    word: YELLOW
+    ink: RED
+    foreground: "#FF0000"
+  - id: 111
+    word: BLUE
+    ink: GREEN
+    foreground: "#008000"
+  - id: 112
+    word: GREEN
+    ink: BLUE
+    foreground: "#0000FF"
+  - id: 113
+    word: YELLOW
+    ink: RED
+    foreground: "#FF0000"
+  - id: 114
+    word: GREEN
+    ink: YELLOW
+    foreground: "#FFFF00"
+  - id: 115
+    word: YELLOW
+    ink: GREEN
+    foreground: "#008000"
+  - id: 116
+    word: GREEN
+    ink: RED
+    foreground: "#FF0000"
+  - id: 117
+    word: RED
+    ink: YELLOW
+    foreground: "#FFFF00"
+  - id: 118
+    word: RED
+    ink: BLUE
+    foreground: "#0000FF"
+  - id: 119
+    word: BLUE
+    ink: YELLOW
+    foreground: "#FFFF00"
+  - id: 120
+    word: GREEN
+    ink: RED
+    foreground: "#FF0000"
+  - id: 121
+    word: GREEN
+    ink: BLUE
+    foreground: "#0000FF"
+  - id: 122
+    word: RED
+    ink: GREEN
+    foreground: "#008000"
+  - id: 123
+    word: GREEN
+    ink: YELLOW
+    foreground: "#FFFF00"
+  - id: 124
+    word: YELLOW
+    ink: RED
+    foreground: "#FF0000"
+  - id: 125
+    word: BLUE
+    ink: GREEN
+    foreground: "#008000"
+  - id: 126
+    word: YELLOW
+    ink: GREEN
+    foreground: "#008000"
+  - id: 127
+    word: RED
+    ink: GREEN
+    foreground: "#008000"
+  - id: 128
+    word: YELLOW
+    ink: GREEN
+    foreground: "#008000"
+  - id: 129
+    word: GREEN
+    ink: BLUE
+    foreground: "#0000FF"
+  - id: 130
+    word: RED
+    ink: YELLOW
+    foreground: "#FFFF00"
+  - id: 131
+    word: BLUE
+    ink: GREEN
+    foreground: "#008000"
+  - id: 132
+    word: BLUE
+    ink: RED
+    foreground: "#FF0000"
+  - id: 133
+    word: BLUE
+    ink: YELLOW
+    foreground: "#FFFF00"
+  - id: 134
+    word: GREEN
+    ink: YELLOW
+    foreground: "#FFFF00"
+  - id: 135
+    word: BLUE
+    ink: RED
+    foreground: "#FF0000"
+  - id: 136
+    word: YELLOW
+    ink: GREEN
+    foreground: "#008000"
+  - id: 137
+    word: GREEN
+    ink: YELLOW
+    foreground: "#FFFF00"
+  - id: 138
+    word: YELLOW
+    ink: RED
+    foreground: "#FF0000"
+  - id: 139
+    word: BLUE
+    ink: YELLOW
+    foreground: "#FFFF00"
+  - id: 140
+    word: RED
+    ink: YELLOW
+    foreground: "#FFFF00"
+  - id: 141
+    word: BLUE
+    ink: YELLOW
+    foreground: "#FFFF00"
+  - id: 142
+    word: RED
+    ink: BLUE
+    foreground: "#0000FF"
+  - id: 143
+    word: BLUE
+    ink: RED
+    foreground: "#FF0000"
+  - id: 144
+    word: YELLOW
+    ink: RED
+    foreground: "#FF0000"
+  - id: 145
+    word: RED
+    ink: YELLOW
+    foreground: "#FFFF00"
+  - id: 146
+    word: YELLOW
+    ink: GREEN
+    foreground: "#008000"
+  - id: 147
+    word: RED
+    ink: YELLOW
+    foreground: "#FFFF00"
+  - id: 148
+    word: GREEN
+    ink: YELLOW
+    foreground: "#FFFF00"
+  - id: 149
+    word: RED
+    ink: BLUE
+    foreground: "#0000FF"
+  - id: 150
+    word: GREEN
+    ink: RED
+    foreground: "#FF0000"
+  - id: 151
+    word: BLUE
+    ink: YELLOW
+    foreground: "#FFFF00"
+  - id: 152
+    word: GREEN
+    ink: RED
+    foreground: "#FF0000"
+  - id: 153
+    word: YELLOW
+    ink: RED
+    foreground: "#FF0000"
+  - id: 154
+    word: BLUE
+    ink: YELLOW
+    foreground: "#FFFF00"
+  - id: 155
+    word: RED
+    ink: GREEN
+    foreground: "#008000"
+  - id: 156
+    word: BLUE
+    ink: GREEN
+    foreground: "#008000"
+  - id: 157
+    word: GREEN
+    ink: YELLOW
+    foreground: "#FFFF00"
+  - id: 158
+    word: YELLOW
+    ink: RED
+    foreground: "#FF0000"
+  - id: 159
+    word: YELLOW
+    ink: BLUE
+    foreground: "#0000FF"
+  - id: 160
+    word: BLUE
+    ink: GREEN
+    foreground: "#008000"
+  - id: 161
+    word: BLUE
+    ink: GREEN
+    foreground: "#008000"
+  - id: 162
+    word: GREEN
+    ink: BLUE
+    foreground: "#0000FF"
+  - id: 163
+    word: BLUE
+    ink: GREEN
+    foreground: "#008000"
+  - id: 164
+    word: RED
+    ink: GREEN
+    foreground: "#008000"
+  - id: 165
+    word: RED
+    ink: BLUE
+    foreground: "#0000FF"
+  - id: 166
+    word: YELLOW
+    ink: BLUE
+    foreground: "#0000FF"
+  - id: 167
+    word: RED
+    ink: YELLOW
+    foreground: "#FFFF00"
+  - id: 168
+    word: RED
+    ink: YELLOW
+    foreground: "#FFFF00"
+  - id: 169
+    word: YELLOW
+    ink: GREEN
+    foreground: "#008000"
+  - id: 170
+    word: GREEN
+    ink: RED
+    foreground: "#FF0000"
+  - id: 171
+    word: BLUE
+    ink: GREEN
+    foreground: "#008000"
+  - id: 172
+    word: GREEN
+    ink: RED
+    foreground: "#FF0000"
+  - id: 173
+    word: RED
+    ink: GREEN
+    foreground: "#008000"
+  - id: 174
+    word: GREEN
+    ink: BLUE
+    foreground: "#0000FF"
+  - id: 175
+    word: RED
+    ink: BLUE
+    foreground: "#0000FF"
+  - id: 176
+    word: YELLOW
+    ink: BLUE
+    foreground: "#0000FF"
+  - id: 177
+    word: BLUE
+    ink: RED
+    foreground: "#FF0000"
+  - id: 178
+    word: BLUE
+    ink: RED
+    foreground: "#FF0000"
+  - id: 179
+    word: BLUE
+    ink: YELLOW
+    foreground: "#FFFF00"
+  - id: 180
+    word: YELLOW
+    ink: BLUE
+    foreground: "#0000FF"
+  - id: 181
+    word: YELLOW
+    ink: BLUE
+    foreground: "#0000FF"
+  - id: 182
+    word: YELLOW
+    ink: BLUE
+    foreground: "#0000FF"
+  - id: 183
+    word: YELLOW
+    ink: GREEN
+    foreground: "#008000"
+  - id: 184
+    word: GREEN
+    ink: RED
+    foreground: "#FF0000"
+  - id: 185
+    word: RED
+    ink: YELLOW
+    foreground: "#FFFF00"
+  - id: 186
+    word: YELLOW
+    ink: BLUE
+    foreground: "#0000FF"
+  - id: 187
+    word: BLUE
+    ink: RED
+    foreground: "#FF0000"
+  - id: 188
+    word: YELLOW
+    ink: GREEN
+    foreground: "#008000"
+  - id: 189
+    word: YELLOW
+    ink: RED
+    foreground: "#FF0000"
+  - id: 190
+    word: YELLOW
+    ink: BLUE
+    foreground: "#0000FF"
+  - id: 191
+    word: BLUE
+    ink: GREEN
+    foreground: "#008000"
+  - id: 192
+    word: YELLOW
+    ink: BLUE
+    foreground: "#0000FF"
+  - id: 193
+    word: BLUE
+    ink: GREEN
+    foreground: "#008000"
+  - id: 194
+    word: BLUE
+    ink: YELLOW
+    foreground: "#FFFF00"
+  - id: 195
+    word: RED
+    ink: GREEN
+    foreground: "#008000"
+  - id: 196
+    word: BLUE
+    ink: GREEN
+    foreground: "#008000"
+  - id: 197
+    word: YELLOW
+    ink: GREEN
+    foreground: "#008000"
+  - id: 198
+    word: BLUE
+    ink: GREEN
+    foreground: "#008000"
+  - id: 199
+    word: YELLOW
+    ink: RED
+    foreground: "#FF0000"
+  - id: 200
+    word: GREEN
+    ink: YELLOW
+    foreground: "#FFFF00"

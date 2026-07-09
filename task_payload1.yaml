@@ -1,0 +1,1179 @@
+payload:
+  schema: task_payload.v2
+  version: '2.0'
+experiment:
+  id: standard_stroop_200_v2
+  name: Standard Stroop Task
+  version: '2.0'
+  description: 'Standard Stroop color-word interference task with a 200-trial dataset.
+
+    The model must report the ink color while ignoring the written word.'
+  paradigm: stroop
+  author:
+    name: ExecutiveAudit
+  compatibility:
+    framework: ExecutiveAudit
+    minimum_configuration_schema: experiment_configuration.v2
+instructions:
+  system_role: experimental subject
+  task_brief: 'Name the ink color and ignore the written word.
+
+    '
+  task_detail: 'Name the ink color.
+
+    Ignore the written word.
+
+    Use the numerical RGB foreground values from the stimulus.
+
+    '
+  response_format: Return ONLY the color name that matches the foreground RGB values.
+  closing_prompt: Now answer using the current stimulus.
+  display:
+    show_field_labels: true
+    field_order:
+    - word
+    - foreground_rgb
+    labels:
+      word: Word
+      foreground_rgb: Foreground RGB
+      ink: Expected Ink
+      foreground_hex: Foreground Hex
+  examples:
+  - id: example_1
+    stimulus:
+      word: RED
+      foreground_rgb: 0, 0, 255
+    expected_response: BLUE
+stimulus_schema:
+  id_field: stimulus_id
+  fields:
+  - name: stimulus_id
+    type: integer
+    required: true
+    display: false
+    label: Stimulus ID
+  - name: word
+    type: string
+    required: true
+    display: true
+    label: Word
+  - name: foreground_rgb
+    type: string
+    required: true
+    display: true
+    label: Foreground RGB
+  - name: ink
+    type: string
+    required: true
+    display: false
+    label: Expected Ink
+  - name: foreground_hex
+    type: string
+    required: true
+    display: false
+    label: Foreground Hex
+response_contract:
+  type: single_token
+  extraction:
+    mode: last_token
+    regex: null
+  normalization:
+    case: upper
+    trim_whitespace: true
+    strip_punctuation: true
+  validation:
+    require_exactly_one_answer: true
+    allow_explanation: false
+    allow_justification: false
+    allow_analysis: false
+    allow_questions: false
+    allow_additional_text: false
+  expected_answer:
+    source: stimulus_field
+    field: ink
+    literal: null
+  accepted_answer_space:
+    source: explicit_list
+    values:
+    - RED
+    - BLUE
+    - GREEN
+    - YELLOW
+    stimulus_fields:
+    - ink
+    - word
+  aliases: {}
+parser:
+  pipeline:
+  - extract_answer
+  - normalize_answer
+  - validate_answer_shape
+  stages:
+    extract_answer:
+      mode: last_token
+    normalize_answer:
+      case: upper
+      strip_punctuation: true
+    validate_answer_shape:
+      require_exactly_one_answer: true
+metrics:
+  enabled:
+  - accuracy
+  - protocol_adherence
+  - response_time
+  definitions:
+    accuracy:
+      type: exact_match
+      expected_answer_source:
+        source: stimulus_field
+        field: ink
+    protocol_adherence:
+      type: allowed_response_check
+      allowed_response_source:
+        source: explicit_list
+        values:
+        - RED
+        - BLUE
+        - GREEN
+        - YELLOW
+        stimulus_fields:
+        - ink
+        - word
+      require_single_token: true
+    response_time:
+      type: latency
+      unit: seconds
+  aggregation:
+    accuracy_rate:
+      from_metric: accuracy
+      reducer: mean_boolean
+    protocol_adherence_rate:
+      from_metric: protocol_adherence
+      reducer: mean_boolean
+    average_response_time_seconds:
+      from_metric: response_time
+      reducer: mean
+resources:
+  inline:
+    allowed_values:
+    - RED
+    - BLUE
+    - GREEN
+    - YELLOW
+  references: []
+report_contract:
+  trial_fields:
+  - stimulus_id
+  - word
+  - foreground_rgb
+  - extracted_answer
+  - expected_answer
+  - is_correct
+  - is_protocol_adherent
+  - response_time_seconds
+  summary_fields:
+  - executed_trials
+  - accuracy_rate
+  - protocol_adherence_rate
+  - average_response_time_seconds
+stimuli:
+- stimulus_id: 1
+  word: RED
+  foreground_rgb: 0, 0, 255
+  ink: BLUE
+  foreground_hex: '#0000FF'
+- stimulus_id: 2
+  word: YELLOW
+  foreground_rgb: 0, 128, 0
+  ink: GREEN
+  foreground_hex: '#008000'
+- stimulus_id: 3
+  word: GREEN
+  foreground_rgb: 0, 0, 255
+  ink: BLUE
+  foreground_hex: '#0000FF'
+- stimulus_id: 4
+  word: RED
+  foreground_rgb: 0, 0, 255
+  ink: BLUE
+  foreground_hex: '#0000FF'
+- stimulus_id: 5
+  word: GREEN
+  foreground_rgb: 255, 0, 0
+  ink: RED
+  foreground_hex: '#FF0000'
+- stimulus_id: 6
+  word: YELLOW
+  foreground_rgb: 0, 0, 255
+  ink: BLUE
+  foreground_hex: '#0000FF'
+- stimulus_id: 7
+  word: GREEN
+  foreground_rgb: 0, 0, 255
+  ink: BLUE
+  foreground_hex: '#0000FF'
+- stimulus_id: 8
+  word: YELLOW
+  foreground_rgb: 0, 0, 255
+  ink: BLUE
+  foreground_hex: '#0000FF'
+- stimulus_id: 9
+  word: RED
+  foreground_rgb: 0, 128, 0
+  ink: GREEN
+  foreground_hex: '#008000'
+- stimulus_id: 10
+  word: BLUE
+  foreground_rgb: 255, 255, 0
+  ink: YELLOW
+  foreground_hex: '#FFFF00'
+- stimulus_id: 11
+  word: GREEN
+  foreground_rgb: 255, 0, 0
+  ink: RED
+  foreground_hex: '#FF0000'
+- stimulus_id: 12
+  word: BLUE
+  foreground_rgb: 255, 255, 0
+  ink: YELLOW
+  foreground_hex: '#FFFF00'
+- stimulus_id: 13
+  word: BLUE
+  foreground_rgb: 255, 0, 0
+  ink: RED
+  foreground_hex: '#FF0000'
+- stimulus_id: 14
+  word: RED
+  foreground_rgb: 0, 0, 255
+  ink: BLUE
+  foreground_hex: '#0000FF'
+- stimulus_id: 15
+  word: RED
+  foreground_rgb: 0, 0, 255
+  ink: BLUE
+  foreground_hex: '#0000FF'
+- stimulus_id: 16
+  word: RED
+  foreground_rgb: 0, 0, 255
+  ink: BLUE
+  foreground_hex: '#0000FF'
+- stimulus_id: 17
+  word: GREEN
+  foreground_rgb: 255, 255, 0
+  ink: YELLOW
+  foreground_hex: '#FFFF00'
+- stimulus_id: 18
+  word: YELLOW
+  foreground_rgb: 255, 0, 0
+  ink: RED
+  foreground_hex: '#FF0000'
+- stimulus_id: 19
+  word: BLUE
+  foreground_rgb: 0, 128, 0
+  ink: GREEN
+  foreground_hex: '#008000'
+- stimulus_id: 20
+  word: RED
+  foreground_rgb: 0, 128, 0
+  ink: GREEN
+  foreground_hex: '#008000'
+- stimulus_id: 21
+  word: GREEN
+  foreground_rgb: 255, 0, 0
+  ink: RED
+  foreground_hex: '#FF0000'
+- stimulus_id: 22
+  word: BLUE
+  foreground_rgb: 255, 255, 0
+  ink: YELLOW
+  foreground_hex: '#FFFF00'
+- stimulus_id: 23
+  word: BLUE
+  foreground_rgb: 255, 255, 0
+  ink: YELLOW
+  foreground_hex: '#FFFF00'
+- stimulus_id: 24
+  word: GREEN
+  foreground_rgb: 255, 0, 0
+  ink: RED
+  foreground_hex: '#FF0000'
+- stimulus_id: 25
+  word: YELLOW
+  foreground_rgb: 255, 0, 0
+  ink: RED
+  foreground_hex: '#FF0000'
+- stimulus_id: 26
+  word: RED
+  foreground_rgb: 255, 255, 0
+  ink: YELLOW
+  foreground_hex: '#FFFF00'
+- stimulus_id: 27
+  word: RED
+  foreground_rgb: 255, 255, 0
+  ink: YELLOW
+  foreground_hex: '#FFFF00'
+- stimulus_id: 28
+  word: BLUE
+  foreground_rgb: 255, 255, 0
+  ink: YELLOW
+  foreground_hex: '#FFFF00'
+- stimulus_id: 29
+  word: BLUE
+  foreground_rgb: 255, 0, 0
+  ink: RED
+  foreground_hex: '#FF0000'
+- stimulus_id: 30
+  word: RED
+  foreground_rgb: 0, 0, 255
+  ink: BLUE
+  foreground_hex: '#0000FF'
+- stimulus_id: 31
+  word: BLUE
+  foreground_rgb: 255, 255, 0
+  ink: YELLOW
+  foreground_hex: '#FFFF00'
+- stimulus_id: 32
+  word: YELLOW
+  foreground_rgb: 0, 0, 255
+  ink: BLUE
+  foreground_hex: '#0000FF'
+- stimulus_id: 33
+  word: GREEN
+  foreground_rgb: 0, 0, 255
+  ink: BLUE
+  foreground_hex: '#0000FF'
+- stimulus_id: 34
+  word: YELLOW
+  foreground_rgb: 255, 0, 0
+  ink: RED
+  foreground_hex: '#FF0000'
+- stimulus_id: 35
+  word: YELLOW
+  foreground_rgb: 255, 0, 0
+  ink: RED
+  foreground_hex: '#FF0000'
+- stimulus_id: 36
+  word: BLUE
+  foreground_rgb: 255, 255, 0
+  ink: YELLOW
+  foreground_hex: '#FFFF00'
+- stimulus_id: 37
+  word: GREEN
+  foreground_rgb: 0, 0, 255
+  ink: BLUE
+  foreground_hex: '#0000FF'
+- stimulus_id: 38
+  word: GREEN
+  foreground_rgb: 0, 0, 255
+  ink: BLUE
+  foreground_hex: '#0000FF'
+- stimulus_id: 39
+  word: GREEN
+  foreground_rgb: 255, 255, 0
+  ink: YELLOW
+  foreground_hex: '#FFFF00'
+- stimulus_id: 40
+  word: GREEN
+  foreground_rgb: 255, 0, 0
+  ink: RED
+  foreground_hex: '#FF0000'
+- stimulus_id: 41
+  word: RED
+  foreground_rgb: 0, 128, 0
+  ink: GREEN
+  foreground_hex: '#008000'
+- stimulus_id: 42
+  word: YELLOW
+  foreground_rgb: 255, 0, 0
+  ink: RED
+  foreground_hex: '#FF0000'
+- stimulus_id: 43
+  word: YELLOW
+  foreground_rgb: 255, 0, 0
+  ink: RED
+  foreground_hex: '#FF0000'
+- stimulus_id: 44
+  word: RED
+  foreground_rgb: 0, 128, 0
+  ink: GREEN
+  foreground_hex: '#008000'
+- stimulus_id: 45
+  word: RED
+  foreground_rgb: 255, 255, 0
+  ink: YELLOW
+  foreground_hex: '#FFFF00'
+- stimulus_id: 46
+  word: BLUE
+  foreground_rgb: 255, 0, 0
+  ink: RED
+  foreground_hex: '#FF0000'
+- stimulus_id: 47
+  word: GREEN
+  foreground_rgb: 0, 0, 255
+  ink: BLUE
+  foreground_hex: '#0000FF'
+- stimulus_id: 48
+  word: GREEN
+  foreground_rgb: 0, 0, 255
+  ink: BLUE
+  foreground_hex: '#0000FF'
+- stimulus_id: 49
+  word: BLUE
+  foreground_rgb: 255, 0, 0
+  ink: RED
+  foreground_hex: '#FF0000'
+- stimulus_id: 50
+  word: BLUE
+  foreground_rgb: 255, 0, 0
+  ink: RED
+  foreground_hex: '#FF0000'
+- stimulus_id: 51
+  word: RED
+  foreground_rgb: 0, 0, 255
+  ink: BLUE
+  foreground_hex: '#0000FF'
+- stimulus_id: 52
+  word: BLUE
+  foreground_rgb: 0, 128, 0
+  ink: GREEN
+  foreground_hex: '#008000'
+- stimulus_id: 53
+  word: RED
+  foreground_rgb: 255, 255, 0
+  ink: YELLOW
+  foreground_hex: '#FFFF00'
+- stimulus_id: 54
+  word: RED
+  foreground_rgb: 255, 255, 0
+  ink: YELLOW
+  foreground_hex: '#FFFF00'
+- stimulus_id: 55
+  word: GREEN
+  foreground_rgb: 0, 0, 255
+  ink: BLUE
+  foreground_hex: '#0000FF'
+- stimulus_id: 56
+  word: YELLOW
+  foreground_rgb: 255, 0, 0
+  ink: RED
+  foreground_hex: '#FF0000'
+- stimulus_id: 57
+  word: YELLOW
+  foreground_rgb: 0, 128, 0
+  ink: GREEN
+  foreground_hex: '#008000'
+- stimulus_id: 58
+  word: RED
+  foreground_rgb: 0, 128, 0
+  ink: GREEN
+  foreground_hex: '#008000'
+- stimulus_id: 59
+  word: RED
+  foreground_rgb: 0, 128, 0
+  ink: GREEN
+  foreground_hex: '#008000'
+- stimulus_id: 60
+  word: GREEN
+  foreground_rgb: 255, 255, 0
+  ink: YELLOW
+  foreground_hex: '#FFFF00'
+- stimulus_id: 61
+  word: YELLOW
+  foreground_rgb: 0, 128, 0
+  ink: GREEN
+  foreground_hex: '#008000'
+- stimulus_id: 62
+  word: GREEN
+  foreground_rgb: 255, 255, 0
+  ink: YELLOW
+  foreground_hex: '#FFFF00'
+- stimulus_id: 63
+  word: YELLOW
+  foreground_rgb: 0, 0, 255
+  ink: BLUE
+  foreground_hex: '#0000FF'
+- stimulus_id: 64
+  word: BLUE
+  foreground_rgb: 255, 0, 0
+  ink: RED
+  foreground_hex: '#FF0000'
+- stimulus_id: 65
+  word: YELLOW
+  foreground_rgb: 0, 128, 0
+  ink: GREEN
+  foreground_hex: '#008000'
+- stimulus_id: 66
+  word: RED
+  foreground_rgb: 0, 0, 255
+  ink: BLUE
+  foreground_hex: '#0000FF'
+- stimulus_id: 67
+  word: GREEN
+  foreground_rgb: 255, 255, 0
+  ink: YELLOW
+  foreground_hex: '#FFFF00'
+- stimulus_id: 68
+  word: BLUE
+  foreground_rgb: 255, 0, 0
+  ink: RED
+  foreground_hex: '#FF0000'
+- stimulus_id: 69
+  word: BLUE
+  foreground_rgb: 255, 255, 0
+  ink: YELLOW
+  foreground_hex: '#FFFF00'
+- stimulus_id: 70
+  word: GREEN
+  foreground_rgb: 255, 0, 0
+  ink: RED
+  foreground_hex: '#FF0000'
+- stimulus_id: 71
+  word: YELLOW
+  foreground_rgb: 0, 128, 0
+  ink: GREEN
+  foreground_hex: '#008000'
+- stimulus_id: 72
+  word: BLUE
+  foreground_rgb: 255, 0, 0
+  ink: RED
+  foreground_hex: '#FF0000'
+- stimulus_id: 73
+  word: GREEN
+  foreground_rgb: 0, 0, 255
+  ink: BLUE
+  foreground_hex: '#0000FF'
+- stimulus_id: 74
+  word: YELLOW
+  foreground_rgb: 0, 128, 0
+  ink: GREEN
+  foreground_hex: '#008000'
+- stimulus_id: 75
+  word: YELLOW
+  foreground_rgb: 0, 0, 255
+  ink: BLUE
+  foreground_hex: '#0000FF'
+- stimulus_id: 76
+  word: GREEN
+  foreground_rgb: 255, 255, 0
+  ink: YELLOW
+  foreground_hex: '#FFFF00'
+- stimulus_id: 77
+  word: BLUE
+  foreground_rgb: 0, 128, 0
+  ink: GREEN
+  foreground_hex: '#008000'
+- stimulus_id: 78
+  word: RED
+  foreground_rgb: 255, 255, 0
+  ink: YELLOW
+  foreground_hex: '#FFFF00'
+- stimulus_id: 79
+  word: BLUE
+  foreground_rgb: 255, 0, 0
+  ink: RED
+  foreground_hex: '#FF0000'
+- stimulus_id: 80
+  word: RED
+  foreground_rgb: 255, 255, 0
+  ink: YELLOW
+  foreground_hex: '#FFFF00'
+- stimulus_id: 81
+  word: BLUE
+  foreground_rgb: 0, 128, 0
+  ink: GREEN
+  foreground_hex: '#008000'
+- stimulus_id: 82
+  word: GREEN
+  foreground_rgb: 255, 255, 0
+  ink: YELLOW
+  foreground_hex: '#FFFF00'
+- stimulus_id: 83
+  word: RED
+  foreground_rgb: 0, 128, 0
+  ink: GREEN
+  foreground_hex: '#008000'
+- stimulus_id: 84
+  word: RED
+  foreground_rgb: 0, 128, 0
+  ink: GREEN
+  foreground_hex: '#008000'
+- stimulus_id: 85
+  word: YELLOW
+  foreground_rgb: 0, 128, 0
+  ink: GREEN
+  foreground_hex: '#008000'
+- stimulus_id: 86
+  word: GREEN
+  foreground_rgb: 0, 0, 255
+  ink: BLUE
+  foreground_hex: '#0000FF'
+- stimulus_id: 87
+  word: RED
+  foreground_rgb: 255, 255, 0
+  ink: YELLOW
+  foreground_hex: '#FFFF00'
+- stimulus_id: 88
+  word: BLUE
+  foreground_rgb: 255, 0, 0
+  ink: RED
+  foreground_hex: '#FF0000'
+- stimulus_id: 89
+  word: RED
+  foreground_rgb: 0, 128, 0
+  ink: GREEN
+  foreground_hex: '#008000'
+- stimulus_id: 90
+  word: GREEN
+  foreground_rgb: 255, 0, 0
+  ink: RED
+  foreground_hex: '#FF0000'
+- stimulus_id: 91
+  word: RED
+  foreground_rgb: 0, 128, 0
+  ink: GREEN
+  foreground_hex: '#008000'
+- stimulus_id: 92
+  word: RED
+  foreground_rgb: 0, 0, 255
+  ink: BLUE
+  foreground_hex: '#0000FF'
+- stimulus_id: 93
+  word: YELLOW
+  foreground_rgb: 0, 0, 255
+  ink: BLUE
+  foreground_hex: '#0000FF'
+- stimulus_id: 94
+  word: GREEN
+  foreground_rgb: 255, 255, 0
+  ink: YELLOW
+  foreground_hex: '#FFFF00'
+- stimulus_id: 95
+  word: YELLOW
+  foreground_rgb: 255, 0, 0
+  ink: RED
+  foreground_hex: '#FF0000'
+- stimulus_id: 96
+  word: YELLOW
+  foreground_rgb: 0, 0, 255
+  ink: BLUE
+  foreground_hex: '#0000FF'
+- stimulus_id: 97
+  word: RED
+  foreground_rgb: 0, 0, 255
+  ink: BLUE
+  foreground_hex: '#0000FF'
+- stimulus_id: 98
+  word: YELLOW
+  foreground_rgb: 0, 128, 0
+  ink: GREEN
+  foreground_hex: '#008000'
+- stimulus_id: 99
+  word: GREEN
+  foreground_rgb: 0, 0, 255
+  ink: BLUE
+  foreground_hex: '#0000FF'
+- stimulus_id: 100
+  word: GREEN
+  foreground_rgb: 255, 0, 0
+  ink: RED
+  foreground_hex: '#FF0000'
+- stimulus_id: 101
+  word: YELLOW
+  foreground_rgb: 0, 0, 255
+  ink: BLUE
+  foreground_hex: '#0000FF'
+- stimulus_id: 102
+  word: GREEN
+  foreground_rgb: 0, 0, 255
+  ink: BLUE
+  foreground_hex: '#0000FF'
+- stimulus_id: 103
+  word: RED
+  foreground_rgb: 0, 0, 255
+  ink: BLUE
+  foreground_hex: '#0000FF'
+- stimulus_id: 104
+  word: BLUE
+  foreground_rgb: 255, 0, 0
+  ink: RED
+  foreground_hex: '#FF0000'
+- stimulus_id: 105
+  word: RED
+  foreground_rgb: 0, 128, 0
+  ink: GREEN
+  foreground_hex: '#008000'
+- stimulus_id: 106
+  word: GREEN
+  foreground_rgb: 255, 0, 0
+  ink: RED
+  foreground_hex: '#FF0000'
+- stimulus_id: 107
+  word: RED
+  foreground_rgb: 0, 0, 255
+  ink: BLUE
+  foreground_hex: '#0000FF'
+- stimulus_id: 108
+  word: GREEN
+  foreground_rgb: 255, 255, 0
+  ink: YELLOW
+  foreground_hex: '#FFFF00'
+- stimulus_id: 109
+  word: GREEN
+  foreground_rgb: 255, 0, 0
+  ink: RED
+  foreground_hex: '#FF0000'
+- stimulus_id: 110
+  word: YELLOW
+  foreground_rgb: 255, 0, 0
+  ink: RED
+  foreground_hex: '#FF0000'
+- stimulus_id: 111
+  word: BLUE
+  foreground_rgb: 0, 128, 0
+  ink: GREEN
+  foreground_hex: '#008000'
+- stimulus_id: 112
+  word: GREEN
+  foreground_rgb: 0, 0, 255
+  ink: BLUE
+  foreground_hex: '#0000FF'
+- stimulus_id: 113
+  word: YELLOW
+  foreground_rgb: 255, 0, 0
+  ink: RED
+  foreground_hex: '#FF0000'
+- stimulus_id: 114
+  word: GREEN
+  foreground_rgb: 255, 255, 0
+  ink: YELLOW
+  foreground_hex: '#FFFF00'
+- stimulus_id: 115
+  word: YELLOW
+  foreground_rgb: 0, 128, 0
+  ink: GREEN
+  foreground_hex: '#008000'
+- stimulus_id: 116
+  word: GREEN
+  foreground_rgb: 255, 0, 0
+  ink: RED
+  foreground_hex: '#FF0000'
+- stimulus_id: 117
+  word: RED
+  foreground_rgb: 255, 255, 0
+  ink: YELLOW
+  foreground_hex: '#FFFF00'
+- stimulus_id: 118
+  word: RED
+  foreground_rgb: 0, 0, 255
+  ink: BLUE
+  foreground_hex: '#0000FF'
+- stimulus_id: 119
+  word: BLUE
+  foreground_rgb: 255, 255, 0
+  ink: YELLOW
+  foreground_hex: '#FFFF00'
+- stimulus_id: 120
+  word: GREEN
+  foreground_rgb: 255, 0, 0
+  ink: RED
+  foreground_hex: '#FF0000'
+- stimulus_id: 121
+  word: GREEN
+  foreground_rgb: 0, 0, 255
+  ink: BLUE
+  foreground_hex: '#0000FF'
+- stimulus_id: 122
+  word: RED
+  foreground_rgb: 0, 128, 0
+  ink: GREEN
+  foreground_hex: '#008000'
+- stimulus_id: 123
+  word: GREEN
+  foreground_rgb: 255, 255, 0
+  ink: YELLOW
+  foreground_hex: '#FFFF00'
+- stimulus_id: 124
+  word: YELLOW
+  foreground_rgb: 255, 0, 0
+  ink: RED
+  foreground_hex: '#FF0000'
+- stimulus_id: 125
+  word: BLUE
+  foreground_rgb: 0, 128, 0
+  ink: GREEN
+  foreground_hex: '#008000'
+- stimulus_id: 126
+  word: YELLOW
+  foreground_rgb: 0, 128, 0
+  ink: GREEN
+  foreground_hex: '#008000'
+- stimulus_id: 127
+  word: RED
+  foreground_rgb: 0, 128, 0
+  ink: GREEN
+  foreground_hex: '#008000'
+- stimulus_id: 128
+  word: YELLOW
+  foreground_rgb: 0, 128, 0
+  ink: GREEN
+  foreground_hex: '#008000'
+- stimulus_id: 129
+  word: GREEN
+  foreground_rgb: 0, 0, 255
+  ink: BLUE
+  foreground_hex: '#0000FF'
+- stimulus_id: 130
+  word: RED
+  foreground_rgb: 255, 255, 0
+  ink: YELLOW
+  foreground_hex: '#FFFF00'
+- stimulus_id: 131
+  word: BLUE
+  foreground_rgb: 0, 128, 0
+  ink: GREEN
+  foreground_hex: '#008000'
+- stimulus_id: 132
+  word: BLUE
+  foreground_rgb: 255, 0, 0
+  ink: RED
+  foreground_hex: '#FF0000'
+- stimulus_id: 133
+  word: BLUE
+  foreground_rgb: 255, 255, 0
+  ink: YELLOW
+  foreground_hex: '#FFFF00'
+- stimulus_id: 134
+  word: GREEN
+  foreground_rgb: 255, 255, 0
+  ink: YELLOW
+  foreground_hex: '#FFFF00'
+- stimulus_id: 135
+  word: BLUE
+  foreground_rgb: 255, 0, 0
+  ink: RED
+  foreground_hex: '#FF0000'
+- stimulus_id: 136
+  word: YELLOW
+  foreground_rgb: 0, 128, 0
+  ink: GREEN
+  foreground_hex: '#008000'
+- stimulus_id: 137
+  word: GREEN
+  foreground_rgb: 255, 255, 0
+  ink: YELLOW
+  foreground_hex: '#FFFF00'
+- stimulus_id: 138
+  word: YELLOW
+  foreground_rgb: 255, 0, 0
+  ink: RED
+  foreground_hex: '#FF0000'
+- stimulus_id: 139
+  word: BLUE
+  foreground_rgb: 255, 255, 0
+  ink: YELLOW
+  foreground_hex: '#FFFF00'
+- stimulus_id: 140
+  word: RED
+  foreground_rgb: 255, 255, 0
+  ink: YELLOW
+  foreground_hex: '#FFFF00'
+- stimulus_id: 141
+  word: BLUE
+  foreground_rgb: 255, 255, 0
+  ink: YELLOW
+  foreground_hex: '#FFFF00'
+- stimulus_id: 142
+  word: RED
+  foreground_rgb: 0, 0, 255
+  ink: BLUE
+  foreground_hex: '#0000FF'
+- stimulus_id: 143
+  word: BLUE
+  foreground_rgb: 255, 0, 0
+  ink: RED
+  foreground_hex: '#FF0000'
+- stimulus_id: 144
+  word: YELLOW
+  foreground_rgb: 255, 0, 0
+  ink: RED
+  foreground_hex: '#FF0000'
+- stimulus_id: 145
+  word: RED
+  foreground_rgb: 255, 255, 0
+  ink: YELLOW
+  foreground_hex: '#FFFF00'
+- stimulus_id: 146
+  word: YELLOW
+  foreground_rgb: 0, 128, 0
+  ink: GREEN
+  foreground_hex: '#008000'
+- stimulus_id: 147
+  word: RED
+  foreground_rgb: 255, 255, 0
+  ink: YELLOW
+  foreground_hex: '#FFFF00'
+- stimulus_id: 148
+  word: GREEN
+  foreground_rgb: 255, 255, 0
+  ink: YELLOW
+  foreground_hex: '#FFFF00'
+- stimulus_id: 149
+  word: RED
+  foreground_rgb: 0, 0, 255
+  ink: BLUE
+  foreground_hex: '#0000FF'
+- stimulus_id: 150
+  word: GREEN
+  foreground_rgb: 255, 0, 0
+  ink: RED
+  foreground_hex: '#FF0000'
+- stimulus_id: 151
+  word: BLUE
+  foreground_rgb: 255, 255, 0
+  ink: YELLOW
+  foreground_hex: '#FFFF00'
+- stimulus_id: 152
+  word: GREEN
+  foreground_rgb: 255, 0, 0
+  ink: RED
+  foreground_hex: '#FF0000'
+- stimulus_id: 153
+  word: YELLOW
+  foreground_rgb: 255, 0, 0
+  ink: RED
+  foreground_hex: '#FF0000'
+- stimulus_id: 154
+  word: BLUE
+  foreground_rgb: 255, 255, 0
+  ink: YELLOW
+  foreground_hex: '#FFFF00'
+- stimulus_id: 155
+  word: RED
+  foreground_rgb: 0, 128, 0
+  ink: GREEN
+  foreground_hex: '#008000'
+- stimulus_id: 156
+  word: BLUE
+  foreground_rgb: 0, 128, 0
+  ink: GREEN
+  foreground_hex: '#008000'
+- stimulus_id: 157
+  word: GREEN
+  foreground_rgb: 255, 255, 0
+  ink: YELLOW
+  foreground_hex: '#FFFF00'
+- stimulus_id: 158
+  word: YELLOW
+  foreground_rgb: 255, 0, 0
+  ink: RED
+  foreground_hex: '#FF0000'
+- stimulus_id: 159
+  word: YELLOW
+  foreground_rgb: 0, 0, 255
+  ink: BLUE
+  foreground_hex: '#0000FF'
+- stimulus_id: 160
+  word: BLUE
+  foreground_rgb: 0, 128, 0
+  ink: GREEN
+  foreground_hex: '#008000'
+- stimulus_id: 161
+  word: BLUE
+  foreground_rgb: 0, 128, 0
+  ink: GREEN
+  foreground_hex: '#008000'
+- stimulus_id: 162
+  word: GREEN
+  foreground_rgb: 0, 0, 255
+  ink: BLUE
+  foreground_hex: '#0000FF'
+- stimulus_id: 163
+  word: BLUE
+  foreground_rgb: 0, 128, 0
+  ink: GREEN
+  foreground_hex: '#008000'
+- stimulus_id: 164
+  word: RED
+  foreground_rgb: 0, 128, 0
+  ink: GREEN
+  foreground_hex: '#008000'
+- stimulus_id: 165
+  word: RED
+  foreground_rgb: 0, 0, 255
+  ink: BLUE
+  foreground_hex: '#0000FF'
+- stimulus_id: 166
+  word: YELLOW
+  foreground_rgb: 0, 0, 255
+  ink: BLUE
+  foreground_hex: '#0000FF'
+- stimulus_id: 167
+  word: RED
+  foreground_rgb: 255, 255, 0
+  ink: YELLOW
+  foreground_hex: '#FFFF00'
+- stimulus_id: 168
+  word: RED
+  foreground_rgb: 255, 255, 0
+  ink: YELLOW
+  foreground_hex: '#FFFF00'
+- stimulus_id: 169
+  word: YELLOW
+  foreground_rgb: 0, 128, 0
+  ink: GREEN
+  foreground_hex: '#008000'
+- stimulus_id: 170
+  word: GREEN
+  foreground_rgb: 255, 0, 0
+  ink: RED
+  foreground_hex: '#FF0000'
+- stimulus_id: 171
+  word: BLUE
+  foreground_rgb: 0, 128, 0
+  ink: GREEN
+  foreground_hex: '#008000'
+- stimulus_id: 172
+  word: GREEN
+  foreground_rgb: 255, 0, 0
+  ink: RED
+  foreground_hex: '#FF0000'
+- stimulus_id: 173
+  word: RED
+  foreground_rgb: 0, 128, 0
+  ink: GREEN
+  foreground_hex: '#008000'
+- stimulus_id: 174
+  word: GREEN
+  foreground_rgb: 0, 0, 255
+  ink: BLUE
+  foreground_hex: '#0000FF'
+- stimulus_id: 175
+  word: RED
+  foreground_rgb: 0, 0, 255
+  ink: BLUE
+  foreground_hex: '#0000FF'
+- stimulus_id: 176
+  word: YELLOW
+  foreground_rgb: 0, 0, 255
+  ink: BLUE
+  foreground_hex: '#0000FF'
+- stimulus_id: 177
+  word: BLUE
+  foreground_rgb: 255, 0, 0
+  ink: RED
+  foreground_hex: '#FF0000'
+- stimulus_id: 178
+  word: BLUE
+  foreground_rgb: 255, 0, 0
+  ink: RED
+  foreground_hex: '#FF0000'
+- stimulus_id: 179
+  word: BLUE
+  foreground_rgb: 255, 255, 0
+  ink: YELLOW
+  foreground_hex: '#FFFF00'
+- stimulus_id: 180
+  word: YELLOW
+  foreground_rgb: 0, 0, 255
+  ink: BLUE
+  foreground_hex: '#0000FF'
+- stimulus_id: 181
+  word: YELLOW
+  foreground_rgb: 0, 0, 255
+  ink: BLUE
+  foreground_hex: '#0000FF'
+- stimulus_id: 182
+  word: YELLOW
+  foreground_rgb: 0, 0, 255
+  ink: BLUE
+  foreground_hex: '#0000FF'
+- stimulus_id: 183
+  word: YELLOW
+  foreground_rgb: 0, 128, 0
+  ink: GREEN
+  foreground_hex: '#008000'
+- stimulus_id: 184
+  word: GREEN
+  foreground_rgb: 255, 0, 0
+  ink: RED
+  foreground_hex: '#FF0000'
+- stimulus_id: 185
+  word: RED
+  foreground_rgb: 255, 255, 0
+  ink: YELLOW
+  foreground_hex: '#FFFF00'
+- stimulus_id: 186
+  word: YELLOW
+  foreground_rgb: 0, 0, 255
+  ink: BLUE
+  foreground_hex: '#0000FF'
+- stimulus_id: 187
+  word: BLUE
+  foreground_rgb: 255, 0, 0
+  ink: RED
+  foreground_hex: '#FF0000'
+- stimulus_id: 188
+  word: YELLOW
+  foreground_rgb: 0, 128, 0
+  ink: GREEN
+  foreground_hex: '#008000'
+- stimulus_id: 189
+  word: YELLOW
+  foreground_rgb: 255, 0, 0
+  ink: RED
+  foreground_hex: '#FF0000'
+- stimulus_id: 190
+  word: YELLOW
+  foreground_rgb: 0, 0, 255
+  ink: BLUE
+  foreground_hex: '#0000FF'
+- stimulus_id: 191
+  word: BLUE
+  foreground_rgb: 0, 128, 0
+  ink: GREEN
+  foreground_hex: '#008000'
+- stimulus_id: 192
+  word: YELLOW
+  foreground_rgb: 0, 0, 255
+  ink: BLUE
+  foreground_hex: '#0000FF'
+- stimulus_id: 193
+  word: BLUE
+  foreground_rgb: 0, 128, 0
+  ink: GREEN
+  foreground_hex: '#008000'
+- stimulus_id: 194
+  word: BLUE
+  foreground_rgb: 255, 255, 0
+  ink: YELLOW
+  foreground_hex: '#FFFF00'
+- stimulus_id: 195
+  word: RED
+  foreground_rgb: 0, 128, 0
+  ink: GREEN
+  foreground_hex: '#008000'
+- stimulus_id: 196
+  word: BLUE
+  foreground_rgb: 0, 128, 0
+  ink: GREEN
+  foreground_hex: '#008000'
+- stimulus_id: 197
+  word: YELLOW
+  foreground_rgb: 0, 128, 0
+  ink: GREEN
+  foreground_hex: '#008000'
+- stimulus_id: 198
+  word: BLUE
+  foreground_rgb: 0, 128, 0
+  ink: GREEN
+  foreground_hex: '#008000'
+- stimulus_id: 199
+  word: YELLOW
+  foreground_rgb: 255, 0, 0
+  ink: RED
+  foreground_hex: '#FF0000'
+- stimulus_id: 200
+  word: GREEN
+  foreground_rgb: 255, 255, 0
+  ink: YELLOW
+  foreground_hex: '#FFFF00'

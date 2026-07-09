@@ -1,0 +1,14 @@
+parser:
+
+  type: json
+
+  required_fields:
+    - rating
+    - justification
+
+  optional_fields: []
+
+  defaults: {}
+
+  validation:
+    strict: true
