@@ -1,0 +1,125 @@
+framework:
+
+  name: ExecutiveAudit
+
+  version: "1.0"
+
+  schema: "experiment.schema.v1"
+
+
+
+experiment:
+
+  id: stroop_standard_v1
+
+  name: Standard Stroop Benchmark
+
+  description: >
+
+    Baseline executive-control experiment.
+
+  author: ""
+
+  created: ""
+
+
+
+execution:
+
+  repetitions: 20
+
+  random_seed: 42
+
+  timeout_seconds: 60
+
+  parallel_runs: 1
+
+  save_raw_output: true
+
+
+
+task:
+
+  package: tasks/stroop_standard
+
+
+
+model:
+
+  # adapter: anthropic
+
+  # model: claude-haiku-4-5-20251001
+
+  # adapter: deepseek
+
+  # model: deepseek-chat
+
+  # adapter: ollama
+
+  # model: phi3.5:latest
+
+  # model: llama3.2:1b
+
+  # api_key_env: DEEPSEEK_API_KEY
+
+  # base_url: https://api.deepseek.com
+
+  # api_key_env: ANTHROPIC_API_KEY
+
+  # base_url: https://api.anthropic.com
+
+  temperature: 0.0
+
+  max_tokens: 5
+
+
+
+parser:
+
+  name: default
+
+
+
+metrics:
+
+  enabled:
+
+    - accuracy
+
+    - response_time
+
+    - omitted_items
+
+
+
+report:
+
+  output_directory: reports/
+
+  formats:
+
+    - json
+
+    - html
+
+
+
+logging:
+
+  level: INFO
+
+  save_log: true
+
+
+
+validation:
+
+  strict_mode: true
+
+  stop_on_error: true
+
+
+
+extensions: {}
+
+metadata: {}

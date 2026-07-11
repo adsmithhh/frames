@@ -1,0 +1,4 @@
+# Placeholder for API key. Do NOT commit real keys.
+# Usage examples:
+#  PowerShell:  $env:OPENAI_API_KEY = '<YOUR_KEY_HERE>'
+#  Bash:        export OPENAI_API_KEY='<YOUR_KEY_HERE>'
